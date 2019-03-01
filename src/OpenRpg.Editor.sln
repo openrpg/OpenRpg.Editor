@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{60BD5533-1BB3-46D4-ACA2-CB6D262CF639}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{6E1EC7F0-D04E-48F9-ADAD-64484ACC0405}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRpg.Editors.Server", "OpenRpg.Editor.Server\OpenRpg.Editors.Server.csproj", "{5B556FAA-02BB-4800-B2B3-1E01B9D2F66A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRpg.Editors.App", "OpenRpg.Editors.App\OpenRpg.Editors.App.csproj", "{00E65864-BDC3-4EC0-9458-F72F472DE6DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRpg.Editors.Data", "OpenRpg.Editors.Data\OpenRpg.Editors.Data.csproj", "{22155EB7-0A1F-46B3-9244-BB1A78E6C780}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B556FAA-02BB-4800-B2B3-1E01B9D2F66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B556FAA-02BB-4800-B2B3-1E01B9D2F66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B556FAA-02BB-4800-B2B3-1E01B9D2F66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B556FAA-02BB-4800-B2B3-1E01B9D2F66A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00E65864-BDC3-4EC0-9458-F72F472DE6DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00E65864-BDC3-4EC0-9458-F72F472DE6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00E65864-BDC3-4EC0-9458-F72F472DE6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00E65864-BDC3-4EC0-9458-F72F472DE6DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22155EB7-0A1F-46B3-9244-BB1A78E6C780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22155EB7-0A1F-46B3-9244-BB1A78E6C780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22155EB7-0A1F-46B3-9244-BB1A78E6C780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22155EB7-0A1F-46B3-9244-BB1A78E6C780}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5B556FAA-02BB-4800-B2B3-1E01B9D2F66A} = {6E1EC7F0-D04E-48F9-ADAD-64484ACC0405}
+		{00E65864-BDC3-4EC0-9458-F72F472DE6DB} = {6E1EC7F0-D04E-48F9-ADAD-64484ACC0405}
+		{22155EB7-0A1F-46B3-9244-BB1A78E6C780} = {60BD5533-1BB3-46D4-ACA2-CB6D262CF639}
+	EndGlobalSection
+EndGlobal

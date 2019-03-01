@@ -1,0 +1,140 @@
+﻿@page "/classes"
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using OpenRpg.Core.Defaults.Conventions
+@using OpenRpg.Core.Effects
+@using OpenRpg.Core.Requirements
+@using OpenRpg.Data
+@using OpenRpg.Data.DataManagers
+@using OpenRpg.Items
+@inject DataStore<ConventionalClassTemplate> DataStore
+@inject IDataStoreManager<ConventionalClassTemplate> Manager;
+
+<div class="columns">
+    <div class="column is-one-fifth">
+        <aside class="menu side-menu has-background-dark">
+            <p class="menu-label">
+                <span>Class Templates</span> 
+                <a class="tag is-primary m-sm" onclick="@AddClass">+ Add</a>
+            </p>
+            <ul class="menu-list p-sm">
+                @foreach (var classTemplate in DataStore.Data)
+                {
+                    <li class="menu-item m-sm @(classTemplate == CurrentClassTemplate ? "is-active" : "")">
+                        <a class="button has-text-left" onclick="@(() => SelectClass(classTemplate))">@($"{classTemplate.Id}. {classTemplate.AssetCode}")</a>
+                    </li>
+                }
+            </ul>
+        </aside>
+    </div>
+    <div class="column">
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Basic Details</h4>
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label has-text-light">Id</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="text" value="@CurrentClassTemplate.Id" 
+                                   disabled="@true" readonly="@true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label has-text-light">Asset Code</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="text" placeholder="i.e item-something" bind="@CurrentClassTemplate.AssetCode"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <LocaleDetails LocaleData="CurrentClassTemplate"></LocaleDetails>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Effects</h4>
+            <EffectsEditor Effects="CurrentClassTemplate.Effects"  OnUpdate="@UpdateEffect"></EffectsEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Requirements</h4>
+            <RequirementsEditor Requirements="CurrentClassTemplate.Requirements"  OnUpdate="@UpdateRequirements"></RequirementsEditor>
+        </div>
+        
+        <div>
+            <a class="button is-success" onclick="@SaveChanges">Save</a>
+        </div>
+        
+    </div>
+</div>
+
+@functions {
+    public ConventionalClassTemplate CurrentClassTemplate;
+
+    protected override void OnInit()
+    {
+        if (DataStore.Data.Count > 0)
+        { CurrentClassTemplate = DataStore.Data.First(); }
+        else
+        {
+            CurrentClassTemplate = new ConventionalClassTemplate();
+            CurrentClassTemplate.Id = 1;
+            DataStore.Data.Add(CurrentClassTemplate);
+        }
+    }
+
+    public void AddClass()
+    {
+        CurrentClassTemplate = new ConventionalClassTemplate();
+        CurrentClassTemplate.Id = DataStore.Data.Count + 1;
+        CurrentClassTemplate.AssetCode = $"class-new-{CurrentClassTemplate.Id}";
+        DataStore.Data.Add(CurrentClassTemplate);
+        StateHasChanged();
+    }
+
+    public void SelectClass(ConventionalClassTemplate classTemplate)
+    {
+        CurrentClassTemplate = classTemplate;
+        StateHasChanged();
+    }
+
+    public async void SaveChanges()
+    {
+        try
+        {
+            await Manager.SaveData(DataStore);
+            var options = new {message = "Classes saved", type = "is-success", position = "bottom-center"};
+            await JSRuntime.Current.InvokeAsync<object>("bulmaToast.toast", options);
+
+        }
+        catch (Exception e)
+        {
+            var options = new {message = $"Error Saving: {e.Message}", type = "is-danger", position = "bottom-center"};
+            await JSRuntime.Current.InvokeAsync<object>("bulmaToast.toast", options);   
+        }
+    }
+    
+    public void UpdateEffect(IEnumerable<Effect> updatedEffects)
+    {
+        CurrentClassTemplate.Effects = updatedEffects;
+        StateHasChanged();
+    }
+    
+    public void UpdateRequirements(IEnumerable<Requirement> updatedRequirements)
+    {
+        CurrentClassTemplate.Requirements = updatedRequirements;
+        StateHasChanged();
+    }
+}

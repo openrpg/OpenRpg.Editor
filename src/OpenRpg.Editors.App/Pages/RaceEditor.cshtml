@@ -1,0 +1,140 @@
+﻿@page "/races"
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using OpenRpg.Core.Defaults.Conventions
+@using OpenRpg.Core.Effects
+@using OpenRpg.Core.Requirements
+@using OpenRpg.Data
+@using OpenRpg.Data.DataManagers
+@using OpenRpg.Items
+@inject DataStore<ConventionalRaceTemplate> DataStore
+@inject IDataStoreManager<ConventionalRaceTemplate> Manager;
+
+<div class="columns">
+    <div class="column is-one-fifth">
+        <aside class="menu side-menu has-background-dark">
+            <p class="menu-label">
+                <span>Race Templates</span> 
+                <a class="tag is-primary m-sm" onclick="@AddRace">+ Add</a>
+            </p>
+            <ul class="menu-list p-sm">
+                @foreach (var raceTemplate in DataStore.Data)
+                {
+                    <li class="menu-item m-sm @(raceTemplate == CurrentRaceTemplate ? "is-active" : "")">
+                        <a class="button has-text-left" onclick="@(() => SelectRace(raceTemplate))">@($"{raceTemplate.Id}. {raceTemplate.AssetCode}")</a>
+                    </li>
+                }
+            </ul>
+        </aside>
+    </div>
+    <div class="column">
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Basic Details</h4>
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label has-text-light">Id</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="text" value="@CurrentRaceTemplate.Id" 
+                                   disabled="@true" readonly="@true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label has-text-light">Asset Code</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="text" placeholder="i.e item-something" bind="@CurrentRaceTemplate.AssetCode"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <LocaleDetails LocaleData="CurrentRaceTemplate"></LocaleDetails>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Effects</h4>
+            <EffectsEditor Effects="CurrentRaceTemplate.Effects" OnUpdate="@UpdateEffect"></EffectsEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Requirements</h4>
+            <RequirementsEditor Requirements="CurrentRaceTemplate.Requirements" OnUpdate="@UpdateRequirements"></RequirementsEditor>
+        </div>
+        
+        <div>
+            <a class="button is-success" onclick="@SaveChanges">Save</a>
+        </div>
+        
+    </div>
+</div>
+
+@functions {
+    public ConventionalRaceTemplate CurrentRaceTemplate;
+
+    protected override void OnInit()
+    {
+        if (DataStore.Data.Count > 0)
+        { CurrentRaceTemplate = DataStore.Data.First(); }
+        else
+        {
+            CurrentRaceTemplate = new ConventionalRaceTemplate();
+            CurrentRaceTemplate.Id = 1;
+            DataStore.Data.Add(CurrentRaceTemplate);
+        }
+    }
+
+    public void AddRace()
+    {
+        CurrentRaceTemplate = new ConventionalRaceTemplate();
+        CurrentRaceTemplate.Id = DataStore.Data.Count + 1;
+        CurrentRaceTemplate.AssetCode = $"race-new-{CurrentRaceTemplate.Id}";
+        DataStore.Data.Add(CurrentRaceTemplate);
+        StateHasChanged();
+    }
+
+    public void SelectRace(ConventionalRaceTemplate template)
+    {
+        CurrentRaceTemplate = template;
+        StateHasChanged();
+    }
+
+    public async void SaveChanges()
+    {
+        try
+        {
+            await Manager.SaveData(DataStore);
+            var options = new {message = "Races saved", type = "is-success", position = "bottom-center"};
+            await JSRuntime.Current.InvokeAsync<object>("bulmaToast.toast", options);
+
+        }
+        catch (Exception e)
+        {
+            var options = new {message = $"Error Saving: {e.Message}", type = "is-danger", position = "bottom-center"};
+            await JSRuntime.Current.InvokeAsync<object>("bulmaToast.toast", options);   
+        }
+    }
+    
+    public void UpdateEffect(IEnumerable<Effect> updatedEffects)
+    {
+        CurrentRaceTemplate.Effects = updatedEffects;
+        StateHasChanged();
+    }
+    
+    public void UpdateRequirements(IEnumerable<Requirement> updatedRequirements)
+    {
+        CurrentRaceTemplate.Requirements = updatedRequirements;
+        StateHasChanged();
+    }
+}

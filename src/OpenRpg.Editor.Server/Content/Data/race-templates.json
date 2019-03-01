@@ -1,0 +1,67 @@
+{
+  "Data": [
+    {
+      "Id": 1,
+      "AssetCode": "race-human",
+      "Requirements": [],
+      "Effects": [
+        {
+          "EffectType": 14,
+          "Potency": 1.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 13,
+          "Potency": 1.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 94,
+          "Potency": 5.0,
+          "Requirements": []
+        }
+      ]
+    },
+    {
+      "Id": 2,
+      "AssetCode": "race-dwarf",
+      "Requirements": [],
+      "Effects": [
+        {
+          "EffectType": 34,
+          "Potency": 20.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 96,
+          "Potency": 10.0,
+          "Requirements": []
+        }
+      ]
+    },
+    {
+      "Id": 3,
+      "AssetCode": "race-orc",
+      "Requirements": [],
+      "Effects": [
+        {
+          "EffectType": 33,
+          "Potency": 20.0,
+          "Requirements": []
+        }
+      ]
+    },
+    {
+      "Id": 4,
+      "AssetCode": "race-elf",
+      "Requirements": [],
+      "Effects": [
+        {
+          "EffectType": 31,
+          "Potency": 20.0,
+          "Requirements": []
+        }
+      ]
+    }
+  ]
+}

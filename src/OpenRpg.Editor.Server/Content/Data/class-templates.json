@@ -1,0 +1,134 @@
+{
+  "Data": [
+    {
+      "Id": 1,
+      "AssetCode": "class-warrior",
+      "Requirements": [],
+      "Effects": [
+        {
+          "EffectType": 54,
+          "Potency": 30.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 74,
+          "Potency": 20.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 13,
+          "Potency": 2.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 33,
+          "Potency": 20.0,
+          "Requirements": []
+        }
+      ]
+    },
+    {
+      "Id": 2,
+      "AssetCode": "class-paladin",
+      "Requirements": [],
+      "Effects": [
+        {
+          "EffectType": 75,
+          "Potency": 40.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 74,
+          "Potency": 40.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 76,
+          "Potency": 20.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 34,
+          "Potency": 20.0,
+          "Requirements": []
+        }
+      ]
+    },
+    {
+      "Id": 3,
+      "AssetCode": "class-rogue",
+      "Requirements": [],
+      "Effects": [
+        {
+          "EffectType": 30,
+          "Potency": 20.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 55,
+          "Potency": 50.0,
+          "Requirements": []
+        }
+      ]
+    },
+    {
+      "Id": 4,
+      "AssetCode": "class-priest",
+      "Requirements": [],
+      "Effects": [
+        {
+          "EffectType": 31,
+          "Potency": 30.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 154,
+          "Potency": 5.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 160,
+          "Potency": 50.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 161,
+          "Potency": 30.0,
+          "Requirements": []
+        }
+      ]
+    },
+    {
+      "Id": 5,
+      "AssetCode": "class-mage",
+      "Requirements": [],
+      "Effects": [
+        {
+          "EffectType": 31,
+          "Potency": 30.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 156,
+          "Potency": 20.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 157,
+          "Potency": 20.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 116,
+          "Potency": 10.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 117,
+          "Potency": 10.0,
+          "Requirements": []
+        }
+      ]
+    }
+  ]
+}

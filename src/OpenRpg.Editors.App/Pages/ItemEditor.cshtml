@@ -1,0 +1,256 @@
+﻿@page "/items"
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using OpenRpg.Core.Effects
+@using OpenRpg.Core.Modifications
+@using OpenRpg.Core.Requirements
+@using OpenRpg.Data
+@using OpenRpg.Data.DataManagers
+@using OpenRpg.Editors.App.Helpers
+@using OpenRpg.Editors.App.Services
+@using OpenRpg.Items.Defaults.Conventions
+@using OpenRpg.Items
+@inject DataStore<ConventionalItemTemplate> DataStore
+@inject IDataStoreManager<ConventionalItemTemplate> Manager;
+@inject ICloner Cloner;
+
+<div class="columns">
+    <div class="column is-one-fifth">
+        <aside class="menu side-menu has-background-dark">
+            <p class="menu-label">
+                <span>Item Templates</span> 
+                <a class="tag is-primary m-sm" onclick="@AddItem">+ Add</a>
+            </p>
+            <ul class="menu-list p-sm">
+                @foreach (var itemTemplate in DataStore.Data)
+                {
+                    <li class="menu-item m-sm">
+                        <a class="button has-text-left @(itemTemplate == CurrentItemTemplate ? "is-active" : "")" 
+                           onclick="@(() => SelectItem(itemTemplate))">@($"{itemTemplate.Id}. {itemTemplate.AssetCode}")</a>
+                    </li>
+                }
+            </ul>
+        </aside>
+    </div>
+    <div class="column">
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Basic Details</h4>
+            <div class="field is-horizontal">
+                <figure id="item-image" quality-type="@CurrentItemTemplate.ItemQualityType" 
+                        class="image is-128x128 pixilize is-margin-auto is-rounded has-background-grey-dark p-md">
+                    <img src="@($"Assets/{CurrentItemTemplate.AssetCode}.png")">
+                </figure>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label has-text-light">Id</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="text" value="@CurrentItemTemplate.Id" 
+                                   disabled="@true" readonly="@true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label has-text-light">Asset Code</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="text" placeholder="i.e item-something" bind="@CurrentItemTemplate.AssetCode"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label has-text-light">Stack Amount</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="text" placeholder="i.e 25" bind="@CurrentItemTemplate.StackableAmount"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label has-text-light">Value</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="text" placeholder="i.e 100" bind="@CurrentItemTemplate.ItemValue"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label has-text-light">Item Type</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select bind="@CurrentItemTemplate.ItemType">
+                                    @foreach (var itemType in TypesHelper.GetItemTypes)
+                                    {
+                                        <option value=@itemType.Id>@itemType.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-label">
+                        <label class="label has-text-light">Item Quality</label>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select bind="@CurrentItemTemplate.ItemQualityType">
+                                    @foreach (var itemType in TypesHelper.GetItemQualityTypes)
+                                    {
+                                        <option value=@itemType.Id>@itemType.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <LocaleDetails LocaleData="CurrentItemTemplate"></LocaleDetails>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Effects</h4>
+            <EffectsEditor Effects="CurrentItemTemplate.Effects" OnUpdate="@UpdateEffect"></EffectsEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Requirements</h4>
+            <RequirementsEditor Requirements="CurrentItemTemplate.Requirements" OnUpdate="@UpdateRequirements"></RequirementsEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Modification Allowances</h4>
+            <ModificationAllowancesEditor ModificationAllowances="CurrentItemTemplate.ModificationAllowances" OnUpdate="@UpdateModificationAllowances"></ModificationAllowancesEditor>
+        </div>
+        
+        <div class="field is-grouped has-text-centered">
+            <p class="control">
+                <a class="button is-success" onclick="@SaveChanges">
+                    Save Item
+                </a>
+            </p>
+            <p class="control">
+                <a class="button is-info" onclick="@CloneItem">
+                    Clone Item
+                </a>
+            </p>
+            <p class="control">
+                <a class="button is-danger" onclick="@DeleteItem">
+                    Delete Item
+                </a>
+            </p>
+        </div>
+        
+    </div>
+</div>
+
+@functions {
+    public ConventionalItemTemplate CurrentItemTemplate;
+
+    protected override void OnInit()
+    {
+        SelectDefault();
+    }
+
+    public void SelectDefault()
+    {
+        if (DataStore.Data.Count > 0)
+        { CurrentItemTemplate = DataStore.Data.First(); }
+        else
+        {
+            CurrentItemTemplate = new ConventionalItemTemplate();
+            CurrentItemTemplate.Id = 1;
+            DataStore.Data.Add(CurrentItemTemplate);
+        }
+    }
+
+    public void AddItem()
+    {
+        CurrentItemTemplate = new ConventionalItemTemplate();
+        CurrentItemTemplate.Id = DataStore.Data.Count + 1;
+        CurrentItemTemplate.AssetCode = $"item-new-{CurrentItemTemplate.Id}";
+        DataStore.Data.Add(CurrentItemTemplate);
+        StateHasChanged();
+    }
+
+    public void SelectItem(ConventionalItemTemplate itemTemplate)
+    {
+        CurrentItemTemplate = itemTemplate;
+        StateHasChanged();
+    }
+
+    public void DeleteItem()
+    {
+        DataStore.Data.Remove(CurrentItemTemplate);
+        SelectDefault();
+    }
+
+    public void CloneItem()
+    {
+        var clone = Cloner.Clone(CurrentItemTemplate);
+        clone.Id = CurrentItemTemplate.Id = DataStore.Data.Count + 1;
+        clone.AssetCode = $"{CurrentItemTemplate.AssetCode}-clone";
+        
+        DataStore.Data.Add(clone);
+        CurrentItemTemplate = clone;
+        StateHasChanged();
+    }
+
+    public async void SaveChanges()
+    {
+        try
+        {
+            await Manager.SaveData(DataStore);
+            var options = new {message = "Items saved", type = "is-success", position = "bottom-center"};
+            await JSRuntime.Current.InvokeAsync<object>("bulmaToast.toast", options);
+
+        }
+        catch (Exception e)
+        {
+            var options = new {message = $"Error Saving: {e.Message}", type = "is-danger", position = "bottom-center"};
+            await JSRuntime.Current.InvokeAsync<object>("bulmaToast.toast", options);   
+        }
+    }
+
+    public void UpdateEffect(IEnumerable<Effect> updatedEffects)
+    {
+        CurrentItemTemplate.Effects = updatedEffects;
+        StateHasChanged();
+    }
+    
+    public void UpdateRequirements(IEnumerable<Requirement> updatedRequirements)
+    {
+        CurrentItemTemplate.Requirements = updatedRequirements;
+        StateHasChanged();
+    }
+    
+    public void UpdateModificationAllowances(IEnumerable<ModificationAllowance> updatedModificationAllowances)
+    {
+        CurrentItemTemplate.ModificationAllowances = updatedModificationAllowances;
+        StateHasChanged();
+    }
+}
