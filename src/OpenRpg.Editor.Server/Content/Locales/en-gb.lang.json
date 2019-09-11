@@ -104,6 +104,14 @@
     {
       "Key": "race-elf-description",
       "Value": "Elves have an affinity for magic giving them bonuses to any classes aligned with magical abilities"
+    },
+    {
+      "Key": "basic-bandits-name",
+      "Value": "Basic Bandits"
+    },
+    {
+      "Key": "basic-bandits-description",
+      "Value": "There have been reports of bandits in nearby areas, please remove them"
     }
   ]
 }
