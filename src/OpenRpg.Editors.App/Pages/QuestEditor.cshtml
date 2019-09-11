@@ -1,0 +1,89 @@
+﻿@page "/quests"
+@using System.Linq
+@using OpenRpg.Core.Requirements
+@using OpenRpg.Data
+@using OpenRpg.Data.DataManagers
+@using OpenRpg.Quests.Defaults.Conventions
+@inject DataStore<ConventionalQuest> DataStore
+@inject IDataStoreManager<ConventionalQuest> Manager;
+
+<div class="columns">
+    <div class="column is-one-fifth">
+        <ContentSidebar Title="Quests" Data="DataStore.Data" SelectedItem="CurrentQuest"
+                    OnAdd="@AddQuest" OnSelected="@((selected) => SelectQuest(selected as ConventionalQuest))">
+        </ContentSidebar>
+    </div>
+    <div class="column">
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <BasicDetailsEditor Data="CurrentQuest"></BasicDetailsEditor>
+        </div>
+
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <LocaleDetails LocaleData="CurrentQuest"></LocaleDetails>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Requirements</h4>
+            <RequirementsEditor Requirements="CurrentQuest.Requirements" OnUpdate="@UpdateRequirements"></RequirementsEditor>
+        </div>
+        
+        <div>
+            <a class="button is-success" onclick="@SaveChanges">Save</a>
+        </div>
+        
+    </div>
+</div>
+
+@functions {
+    public ConventionalQuest CurrentQuest;
+
+    protected override void OnInit()
+    {
+        if (DataStore.Data.Count > 0)
+        { CurrentQuest = DataStore.Data.First(); }
+        else
+        {
+            CurrentQuest = new ConventionalQuest();
+            CurrentQuest.Id = 1;
+            DataStore.Data.Add(CurrentQuest);
+        }
+    }
+
+    public void AddQuest()
+    {
+        CurrentQuest = new ConventionalQuest();
+        CurrentQuest.Id = DataStore.Data.Count + 1;
+        CurrentQuest.AssetCode = $"class-new-{CurrentQuest.Id}";
+        DataStore.Data.Add(CurrentQuest);
+        StateHasChanged();
+    }
+
+    public void SelectQuest(ConventionalQuest quest)
+    {
+        CurrentQuest = quest;
+        StateHasChanged();
+    }
+
+    public async void SaveChanges()
+    {
+        try
+        {
+            await Manager.SaveData(DataStore);
+            var options = new {message = "Quests saved", type = "is-success", position = "bottom-center"};
+            await JSRuntime.Current.InvokeAsync<object>("bulmaToast.toast", options);
+
+        }
+        catch (Exception e)
+        {
+            var options = new {message = $"Error Saving: {e.Message}", type = "is-danger", position = "bottom-center"};
+            await JSRuntime.Current.InvokeAsync<object>("bulmaToast.toast", options);   
+        }
+    }
+    
+    public void UpdateRequirements(IEnumerable<Requirement> updatedRequirements)
+    {
+        CurrentQuest.Requirements = updatedRequirements;
+        StateHasChanged();
+    }
+}

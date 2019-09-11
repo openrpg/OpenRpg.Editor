@@ -11,6 +11,7 @@ using OpenRpg.Data.DataManagers;
 using OpenRpg.Editors.App.Services;
 using OpenRpg.Items.Defaults.Conventions;
 using OpenRpg.Localization.Databases;
+using OpenRpg.Quests.Defaults.Conventions;
 
 namespace OpenRpg.Editors.App.Modules
 {
@@ -37,6 +38,7 @@ namespace OpenRpg.Editors.App.Modules
             RegisterFileManager<ConventionalItemTemplate>(services, "Content/Data/item-templates.json");
             RegisterFileManager<ConventionalRaceTemplate>(services, "Content/Data/race-templates.json");
             RegisterFileManager<ConventionalClassTemplate>(services, "Content/Data/class-templates.json");
+            RegisterFileManager<ConventionalQuest>(services, "Content/Data/quest-templates.json");
 
             RegisterLocaleDatabase(services);
         }

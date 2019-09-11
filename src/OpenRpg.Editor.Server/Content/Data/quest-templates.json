@@ -1,0 +1,13 @@
+{
+  "Data": [
+    {
+      "Id": 1,
+      "AssetCode": "basic-bandits",
+      "IsRepeatable": false,
+      "Requirements": [],
+      "Objectives": [],
+      "Rewards": [],
+      "Gifts": []
+    }
+  ]
+}

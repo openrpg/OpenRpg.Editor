@@ -1,0 +1,27 @@
+@using Microsoft.AspNetCore.Blazor.Components
+@using OpenRpg.Core.Common
+
+<aside class="menu side-menu has-background-dark">
+    <p class="menu-label">
+        <span>@Title</span> 
+        <a class="tag is-primary m-sm" onclick="@OnAdd">+ Add</a>
+    </p>
+    <ul class="menu-list p-sm">
+        @foreach (var current in Data)
+        {
+            <li class="menu-item m-sm">
+                <a class="button has-text-left @(current.Id == SelectedItem.Id ? "is-active" : "")" 
+                   onclick="@(() => OnSelected(current))">@($"{current.Id}. {(current as IHasAssetCode)?.AssetCode}")</a>
+            </li>
+        }
+    </ul>
+</aside>
+
+@functions {
+    [Parameter] string Title { get; set; }
+    [Parameter] IEnumerable<IHasDataId> Data { get; set; }
+    [Parameter] IHasDataId SelectedItem { get; set; }
+    
+    [Parameter] Action OnAdd { get; set; }
+    [Parameter] Action<IHasDataId> OnSelected { get; set; }
+}

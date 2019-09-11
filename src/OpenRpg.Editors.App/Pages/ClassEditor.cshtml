@@ -10,50 +10,14 @@
 
 <div class="columns">
     <div class="column is-one-fifth">
-        <aside class="menu side-menu has-background-dark">
-            <p class="menu-label">
-                <span>Class Templates</span> 
-                <a class="tag is-primary m-sm" onclick="@AddClass">+ Add</a>
-            </p>
-            <ul class="menu-list p-sm">
-                @foreach (var classTemplate in DataStore.Data)
-                {
-                    <li class="menu-item m-sm @(classTemplate == CurrentClassTemplate ? "is-active" : "")">
-                        <a class="button has-text-left" onclick="@(() => SelectClass(classTemplate))">@($"{classTemplate.Id}. {classTemplate.AssetCode}")</a>
-                    </li>
-                }
-            </ul>
-        </aside>
+        <ContentSidebar Title="Class Templates" Data="DataStore.Data" SelectedItem="CurrentClassTemplate"
+            OnAdd="@AddClass" OnSelected="@((selected) => SelectClass(selected as ConventionalClassTemplate))">
+        </ContentSidebar>
     </div>
     <div class="column">
         
         <div class="is-rounded has-background-dark p-lg m-md">
-            <h4 class="title is-4">Basic Details</h4>
-            <div class="field is-horizontal">
-                <div class="field-label">
-                    <label class="label has-text-light">Id</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input class="input" type="text" value="@CurrentClassTemplate.Id" 
-                                   disabled="@true" readonly="@true" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="field is-horizontal">
-                <div class="field-label">
-                    <label class="label has-text-light">Asset Code</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input class="input" type="text" placeholder="i.e item-something" bind="@CurrentClassTemplate.AssetCode"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <BasicDetailsEditor Data="CurrentClassTemplate"></BasicDetailsEditor>
         </div>
 
         <div class="is-rounded has-background-dark p-lg m-md">
@@ -62,12 +26,12 @@
         
         <div class="is-rounded has-background-dark p-lg m-md">
             <h4 class="title is-4">Effects</h4>
-            <EffectsEditor Effects="CurrentClassTemplate.Effects"  OnUpdate="@UpdateEffect"></EffectsEditor>
+            <EffectsEditor Effects="CurrentClassTemplate.Effects" OnUpdate="@UpdateEffect"></EffectsEditor>
         </div>
         
         <div class="is-rounded has-background-dark p-lg m-md">
             <h4 class="title is-4">Requirements</h4>
-            <RequirementsEditor Requirements="CurrentClassTemplate.Requirements"  OnUpdate="@UpdateRequirements"></RequirementsEditor>
+            <RequirementsEditor Requirements="CurrentClassTemplate.Requirements" OnUpdate="@UpdateRequirements"></RequirementsEditor>
         </div>
         
         <div>

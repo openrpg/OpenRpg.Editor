@@ -10,49 +10,15 @@
 
 <div class="columns">
     <div class="column is-one-fifth">
-        <aside class="menu side-menu has-background-dark">
-            <p class="menu-label">
-                <span>Race Templates</span> 
-                <a class="tag is-primary m-sm" onclick="@AddRace">+ Add</a>
-            </p>
-            <ul class="menu-list p-sm">
-                @foreach (var raceTemplate in DataStore.Data)
-                {
-                    <li class="menu-item m-sm @(raceTemplate == CurrentRaceTemplate ? "is-active" : "")">
-                        <a class="button has-text-left" onclick="@(() => SelectRace(raceTemplate))">@($"{raceTemplate.Id}. {raceTemplate.AssetCode}")</a>
-                    </li>
-                }
-            </ul>
-        </aside>
+        <ContentSidebar Title="Race Templates" Data="DataStore.Data" SelectedItem="CurrentRaceTemplate"
+                    OnAdd="@AddRace" OnSelected="@((selected) => SelectRace(selected as ConventionalRaceTemplate))">
+        </ContentSidebar>
     </div>
     <div class="column">
         
         <div class="is-rounded has-background-dark p-lg m-md">
-            <h4 class="title is-4">Basic Details</h4>
-            <div class="field is-horizontal">
-                <div class="field-label">
-                    <label class="label has-text-light">Id</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input class="input" type="text" value="@CurrentRaceTemplate.Id" 
-                                   disabled="@true" readonly="@true" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="field is-horizontal">
-                <div class="field-label">
-                    <label class="label has-text-light">Asset Code</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input class="input" type="text" placeholder="i.e item-something" bind="@CurrentRaceTemplate.AssetCode"/>
-                        </div>
-                    </div>
-                </div>
+            <div class="is-rounded has-background-dark p-lg m-md">
+                <BasicDetailsEditor Data="CurrentRaceTemplate"></BasicDetailsEditor>
             </div>
         </div>
 
