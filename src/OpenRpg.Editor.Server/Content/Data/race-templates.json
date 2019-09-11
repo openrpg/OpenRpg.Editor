@@ -17,7 +17,27 @@
         },
         {
           "EffectType": 94,
-          "Potency": 5.0,
+          "Potency": 0.05,
+          "Requirements": []
+        },
+        {
+          "EffectType": 3,
+          "Potency": 3.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 1,
+          "Potency": 1.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 16,
+          "Potency": 10.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 17,
+          "Potency": 10.0,
           "Requirements": []
         }
       ]
@@ -29,12 +49,37 @@
       "Effects": [
         {
           "EffectType": 34,
-          "Potency": 20.0,
+          "Potency": 0.2,
           "Requirements": []
         },
         {
           "EffectType": 96,
-          "Potency": 10.0,
+          "Potency": 0.1,
+          "Requirements": []
+        },
+        {
+          "EffectType": 3,
+          "Potency": 3.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 1,
+          "Potency": 1.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 14,
+          "Potency": 1.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 16,
+          "Potency": 12.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 17,
+          "Potency": 8.0,
           "Requirements": []
         }
       ]
@@ -46,7 +91,32 @@
       "Effects": [
         {
           "EffectType": 33,
-          "Potency": 20.0,
+          "Potency": 0.2,
+          "Requirements": []
+        },
+        {
+          "EffectType": 13,
+          "Potency": 1.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 3,
+          "Potency": 3.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 1,
+          "Potency": 1.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 16,
+          "Potency": 12.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 17,
+          "Potency": 4.0,
           "Requirements": []
         }
       ]
@@ -58,7 +128,32 @@
       "Effects": [
         {
           "EffectType": 31,
-          "Potency": 20.0,
+          "Potency": 0.2,
+          "Requirements": []
+        },
+        {
+          "EffectType": 3,
+          "Potency": 3.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 1,
+          "Potency": 1.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 11,
+          "Potency": 1.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 16,
+          "Potency": 8.0,
+          "Requirements": []
+        },
+        {
+          "EffectType": 17,
+          "Potency": 12.0,
           "Requirements": []
         }
       ]

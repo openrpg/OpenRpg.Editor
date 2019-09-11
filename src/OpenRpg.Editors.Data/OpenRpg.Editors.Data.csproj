@@ -8,8 +8,8 @@
     <ItemGroup>
       <PackageReference Include="LazyData" Version="2.0.11" />
       <PackageReference Include="LazyData.Json" Version="2.0.11" />
-      <PackageReference Include="OpenRpg.Items" Version="0.8.26" />
-      <PackageReference Include="OpenRpg.Localization" Version="0.8.26" />
+      <PackageReference Include="OpenRpg.Items" Version="0.8.30" />
+      <PackageReference Include="OpenRpg.Localization" Version="0.8.30" />
     </ItemGroup>
 
 </Project>
