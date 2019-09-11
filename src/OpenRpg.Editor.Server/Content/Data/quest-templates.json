@@ -5,8 +5,27 @@
       "AssetCode": "basic-bandits",
       "IsRepeatable": false,
       "Requirements": [],
-      "Objectives": [],
-      "Rewards": [],
+      "Objectives": [
+        {
+          "ObjectiveType": 7,
+          "AssociatedId": 1,
+          "AssociatedValue": 1
+        }
+      ],
+      "Rewards": [
+        {
+          "RewardType": 1,
+          "AssociatedId": 0,
+          "AssociatedValue": 10,
+          "RewardChance": 1.0
+        },
+        {
+          "RewardType": 2,
+          "AssociatedId": 0,
+          "AssociatedValue": 5,
+          "RewardChance": 1.0
+        }
+      ],
       "Gifts": []
     }
   ]

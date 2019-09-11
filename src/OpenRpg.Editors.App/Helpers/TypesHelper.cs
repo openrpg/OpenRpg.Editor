@@ -28,5 +28,6 @@ namespace OpenRpg.Editors.App.Helpers
         public static readonly OptionData[] GetModificationTypes = GetTypesFor(typeof(ModificationTypes));
         public static readonly OptionData[] GetEffectTypes = GetTypesFor(typeof(EffectTypes));
         public static readonly OptionData[] GetRewardTypes = GetTypesFor(typeof(RewardTypes));
+        public static readonly OptionData[] GetObjectiveTypes = GetTypesFor(typeof(ObjectiveTypes));
     }
 }

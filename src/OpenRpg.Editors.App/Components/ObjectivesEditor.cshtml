@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Blazor.Components
+@using OpenRpg.Editors.App.Helpers
+@using OpenRpg.Quests
+
+<ListEditor Data="@Objectives" OnUpdate="@OnUpdate" TItem="Objective">
+    <HeaderTemplate>
+        <th><abbr title="Objective Type">Objective Type</abbr></th>
+        <th><abbr title="Associated Id">Associated Id</abbr></th>
+        <th><abbr title="Associated Value">Associated Value</abbr></th>
+    </HeaderTemplate>
+    <RowTemplate>
+        <td>
+            <div class="control">
+                <div class="select">
+                    <select bind="@context.ObjectiveType">
+                        @foreach (var objectiveType in TypesHelper.GetObjectiveTypes)
+                        {
+                            <option value=@objectiveType.Id>@objectiveType.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="control">
+                <input class="input" type="text" bind="@context.AssociatedId" />
+            </div>
+        </td>
+        <td>
+            <div class="control">
+                <input class="input" type="text" bind="@context.AssociatedValue" />
+            </div>
+        </td>
+    </RowTemplate>
+</ListEditor>
+
+@functions {
+    [Parameter]
+    IEnumerable<Objective> Objectives { get; set; }
+    
+    [Parameter]
+    Action<IEnumerable<Objective>> OnUpdate { get; set; }
+}

@@ -3,6 +3,7 @@
 @using OpenRpg.Core.Requirements
 @using OpenRpg.Data
 @using OpenRpg.Data.DataManagers
+@using OpenRpg.Quests
 @using OpenRpg.Quests.Defaults.Conventions
 @inject DataStore<ConventionalQuest> DataStore
 @inject IDataStoreManager<ConventionalQuest> Manager;
@@ -21,6 +22,21 @@
 
         <div class="is-rounded has-background-dark p-lg m-md">
             <LocaleDetails LocaleData="CurrentQuest"></LocaleDetails>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Objectives</h4>
+            <ObjectivesEditor Objectives="CurrentQuest.Objectives" OnUpdate="@UpdateObjectives"></ObjectivesEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Gifts</h4>
+            <RewardsEditor Rewards="CurrentQuest.Gifts" OnUpdate="@UpdateGifts"></RewardsEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Rewards</h4>
+            <RewardsEditor Rewards="CurrentQuest.Rewards" OnUpdate="@UpdateRewards"></RewardsEditor>
         </div>
         
         <div class="is-rounded has-background-dark p-lg m-md">
@@ -79,6 +95,24 @@
             var options = new {message = $"Error Saving: {e.Message}", type = "is-danger", position = "bottom-center"};
             await JSRuntime.Current.InvokeAsync<object>("bulmaToast.toast", options);   
         }
+    }
+    
+    public void UpdateObjectives(IEnumerable<Objective> updatedObjectives)
+    {
+        CurrentQuest.Objectives = updatedObjectives;
+        StateHasChanged();
+    }
+    
+    public void UpdateRewards(IEnumerable<Reward> updatedRewards)
+    {
+        CurrentQuest.Rewards = updatedRewards;
+        StateHasChanged();
+    }
+    
+    public void UpdateGifts(IEnumerable<Reward> updatedGifts)
+    {
+        CurrentQuest.Gifts = updatedGifts;
+        StateHasChanged();
     }
     
     public void UpdateRequirements(IEnumerable<Requirement> updatedRequirements)
