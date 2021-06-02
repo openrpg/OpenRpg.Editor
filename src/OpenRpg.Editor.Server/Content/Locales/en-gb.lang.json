@@ -112,6 +112,22 @@
     {
       "Key": "basic-bandits-description",
       "Value": "There have been reports of bandits in nearby areas, please remove them"
+    },
+    {
+      "Key": "basic-slimes-name",
+      "Value": "Slime Removal"
+    },
+    {
+      "Key": "basic-slimes-description",
+      "Value": "There is simply too much slime infesting nearby areas, please remove it"
+    },
+    {
+      "Key": "first-boss-name",
+      "Value": "First Boss"
+    },
+    {
+      "Key": "first-boss-description",
+      "Value": "Its the first boss, woop"
     }
   ]
 }

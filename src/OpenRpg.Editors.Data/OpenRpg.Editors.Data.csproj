@@ -9,7 +9,7 @@
       <PackageReference Include="LazyData" Version="2.0.11" />
       <PackageReference Include="LazyData.Json" Version="2.0.11" />
       <PackageReference Include="OpenRpg.Items" Version="0.8.34" />
-      <PackageReference Include="OpenRpg.Localization" Version="0.8.34" />
+      <PackageReference Include="OpenRpg.Localization" Version="0.9.37" />
     </ItemGroup>
 
 </Project>

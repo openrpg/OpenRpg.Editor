@@ -7,7 +7,7 @@
       "Requirements": [],
       "Objectives": [
         {
-          "ObjectiveType": 7,
+          "ObjectiveType": 8,
           "AssociatedId": 1,
           "AssociatedValue": 1
         }
@@ -23,6 +23,68 @@
           "RewardType": 2,
           "AssociatedId": 0,
           "AssociatedValue": 5,
+          "RewardChance": 1.0
+        }
+      ],
+      "Gifts": []
+    },
+    {
+      "Id": 2,
+      "AssetCode": "basic-slimes",
+      "IsRepeatable": false,
+      "Requirements": [],
+      "Objectives": [
+        {
+          "ObjectiveType": 8,
+          "AssociatedId": 2,
+          "AssociatedValue": 4
+        }
+      ],
+      "Rewards": [
+        {
+          "RewardType": 2,
+          "AssociatedId": 0,
+          "AssociatedValue": 10,
+          "RewardChance": 1.0
+        },
+        {
+          "RewardType": 2,
+          "AssociatedId": 0,
+          "AssociatedValue": 15,
+          "RewardChance": 1.0
+        }
+      ],
+      "Gifts": []
+    },
+    {
+      "Id": 3,
+      "AssetCode": "first-boss",
+      "IsRepeatable": false,
+      "Requirements": [
+        {
+          "RequirementType": 3,
+          "AssociatedId": 0,
+          "AssociatedValue": 2
+        }
+      ],
+      "Objectives": [
+        {
+          "ObjectiveType": 8,
+          "AssociatedId": 3,
+          "AssociatedValue": 1
+        }
+      ],
+      "Rewards": [
+        {
+          "RewardType": 1,
+          "AssociatedId": 0,
+          "AssociatedValue": 100,
+          "RewardChance": 1.0
+        },
+        {
+          "RewardType": 2,
+          "AssociatedId": 0,
+          "AssociatedValue": 250,
           "RewardChance": 1.0
         }
       ],
