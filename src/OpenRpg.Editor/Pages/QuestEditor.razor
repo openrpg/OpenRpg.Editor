@@ -1,0 +1,125 @@
+﻿@page "/quests"
+
+@using OpenRpg.Core.Requirements
+@using OpenRpg.Data.Defaults
+@using OpenRpg.Editor.Infrastructure.Extensions
+@using OpenRpg.Editor.Infrastructure.Pipelines.Typed
+@using OpenRpg.Quests
+
+@inject IJSRuntime JS
+@inject InMemoryDataRepository<DefaultQuest> Repository
+@inject ISaveDataPipeline<List<DefaultQuest>> SavePipeline;
+
+<div class="columns">
+    <div class="column is-one-fifth">
+        <ContentSidebar Title="Quests" Data="Repository.Data" SelectedItem="CurrentQuest"
+                    OnAdd="AddQuest" OnSelected="selected => SelectQuest(selected as DefaultQuest)">
+        </ContentSidebar>
+    </div>
+    <div class="column">
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <BasicDetailsEditor Data="CurrentQuest"></BasicDetailsEditor>
+        </div>
+
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <LocaleDetails LocaleData="CurrentQuest"></LocaleDetails>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Objectives</h4>
+            <ObjectivesEditor Objectives="CurrentQuest.Objectives" OnUpdate="UpdateObjectives"></ObjectivesEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Gifts</h4>
+            <RewardsEditor Rewards="CurrentQuest.Gifts" OnUpdate="UpdateGifts"></RewardsEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Rewards</h4>
+            <RewardsEditor Rewards="CurrentQuest.Rewards" OnUpdate="UpdateRewards"></RewardsEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Requirements</h4>
+            <RequirementsEditor Requirements="CurrentQuest.Requirements" OnUpdate="UpdateRequirements"></RequirementsEditor>
+        </div>
+        
+        <div>
+            <a class="button is-success" @onclick="SaveChanges">Save</a>
+        </div>
+        
+    </div>
+</div>
+
+@functions {
+    public DefaultQuest CurrentQuest;
+
+    protected override void OnInitialized()
+    {
+        if (Repository.Data.Any())
+        { CurrentQuest = Repository.Data.First(); }
+        else
+        {
+            CurrentQuest = new DefaultQuest();
+            CurrentQuest.Id = 1;
+            Repository.Create(CurrentQuest);
+        }
+    }
+
+    public void AddQuest()
+    {
+        CurrentQuest = new DefaultQuest();
+        CurrentQuest.Id = Repository.Data.Count + 1;
+        CurrentQuest.Variables.AssetCode($"class-new-{CurrentQuest.Id}");
+        Repository.Create(CurrentQuest);
+        StateHasChanged();
+    }
+
+    public void SelectQuest(DefaultQuest quest)
+    {
+        CurrentQuest = quest;
+        StateHasChanged();
+    }
+
+    public async void SaveChanges()
+    {
+        try
+        {
+            await SavePipeline.Execute(Repository.Data);
+            var options = new {message = "Quests saved", type = "is-success", position = "bottom-center"};
+            await JS.InvokeAsync<object>("bulmaToast.toast", options);
+
+        }
+        catch (Exception e)
+        {
+            var options = new {message = $"Error Saving: {e.Message}", type = "is-danger", position = "bottom-center"};
+            await JS.InvokeAsync<object>("bulmaToast.toast", options);   
+        }
+    }
+    
+    public void UpdateObjectives(IEnumerable<Objective> updatedObjectives)
+    {
+        CurrentQuest.Objectives = updatedObjectives;
+        StateHasChanged();
+    }
+    
+    public void UpdateRewards(IEnumerable<Reward> updatedRewards)
+    {
+        CurrentQuest.Rewards = updatedRewards;
+        StateHasChanged();
+    }
+    
+    public void UpdateGifts(IEnumerable<Reward> updatedGifts)
+    {
+        CurrentQuest.Gifts = updatedGifts;
+        StateHasChanged();
+    }
+    
+    public void UpdateRequirements(IEnumerable<Requirement> updatedRequirements)
+    {
+        CurrentQuest.Requirements = updatedRequirements;
+        StateHasChanged();
+    }
+}

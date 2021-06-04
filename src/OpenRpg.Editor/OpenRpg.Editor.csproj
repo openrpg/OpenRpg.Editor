@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.6" />
+      <PackageReference Include="OpenRpg.Core" Version="0.17.107" />
+      <PackageReference Include="OpenRpg.Items" Version="0.17.107" />
+      <PackageReference Include="OpenRpg.Quests" Version="0.17.107" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\OpenRpg.Editor.Infrastructure\OpenRpg.Editor.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,110 @@
+﻿@page "/races"
+
+@using OpenRpg.Core.Effects
+@using OpenRpg.Core.Races
+@using OpenRpg.Core.Requirements
+@using OpenRpg.Data.Defaults
+@using OpenRpg.Editor.Infrastructure.Extensions
+@using OpenRpg.Editor.Infrastructure.Pipelines.Typed
+
+@inject IJSRuntime JS
+@inject InMemoryDataRepository<DefaultRaceTemplate> Repository
+@inject ISaveDataPipeline<List<DefaultRaceTemplate>> SavePipeline;
+
+<div class="columns">
+    <div class="column is-one-fifth">
+        <ContentSidebar Title="Race Templates" Data="Repository.Data" SelectedItem="CurrentRaceTemplate"
+                        OnAdd="AddRace" OnSelected="selected => SelectRace(selected as DefaultRaceTemplate)"/>
+    </div>
+    <div class="column">
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <div class="is-rounded has-background-dark p-lg m-md">
+                <BasicDetailsEditor Data="CurrentRaceTemplate">
+                    <AdditionalContent>
+                        <AssetCodeEditor Variables="CurrentRaceTemplate.Variables" DefaultAssetCode="@($"race-{CurrentRaceTemplate.Id}")"></AssetCodeEditor>
+                    </AdditionalContent>
+                </BasicDetailsEditor>
+            </div>
+        </div>
+
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <LocaleDetails LocaleData="CurrentRaceTemplate"></LocaleDetails>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Effects</h4>
+            <EffectsEditor Effects="CurrentRaceTemplate.Effects" OnUpdate="UpdateEffect"></EffectsEditor>
+        </div>
+        
+        <div class="is-rounded has-background-dark p-lg m-md">
+            <h4 class="title is-4">Requirements</h4>
+            <RequirementsEditor Requirements="CurrentRaceTemplate.Requirements" OnUpdate="UpdateRequirements"></RequirementsEditor>
+        </div>
+        
+        <div>
+            <a class="button is-success" @onclick="SaveChanges">Save</a>
+        </div>
+        
+    </div>
+</div>
+
+@functions {
+    public DefaultRaceTemplate CurrentRaceTemplate;
+
+    protected override void OnInitialized()
+    {
+        if (Repository.Data.Any())
+        { CurrentRaceTemplate = Repository.Data.First(); }
+        else
+        {
+            CurrentRaceTemplate = new DefaultRaceTemplate();
+            CurrentRaceTemplate.Id = 1;
+            Repository.Create(CurrentRaceTemplate);
+        }
+    }
+
+    public void AddRace()
+    {
+        CurrentRaceTemplate = new DefaultRaceTemplate();
+        CurrentRaceTemplate.Id = Repository.Data.Count + 1;
+        CurrentRaceTemplate.Variables.AssetCode($"race-new-{CurrentRaceTemplate.Id}");
+        Repository.Create(CurrentRaceTemplate);
+        StateHasChanged();
+    }
+
+    public void SelectRace(DefaultRaceTemplate template)
+    {
+        CurrentRaceTemplate = template;
+        StateHasChanged();
+    }
+
+    
+    public async void SaveChanges()
+    {
+        try
+        {
+            await SavePipeline.Execute(Repository.Data);
+            var options = new {message = "Races saved", type = "is-success", position = "bottom-center"};
+            await JS.InvokeAsync<object>("bulmaToast.toast", options);
+
+        }
+        catch (Exception e)
+        {
+            var options = new {message = $"Error Saving: {e.Message}", type = "is-danger", position = "bottom-center"};
+            await JS.InvokeAsync<object>("bulmaToast.toast", options);   
+        }
+    }
+    
+    public void UpdateEffect(IEnumerable<Effect> updatedEffects)
+    {
+        CurrentRaceTemplate.Effects = updatedEffects;
+        StateHasChanged();
+    }
+    
+    public void UpdateRequirements(IEnumerable<Requirement> updatedRequirements)
+    {
+        CurrentRaceTemplate.Requirements = updatedRequirements;
+        StateHasChanged();
+    }
+}

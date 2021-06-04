@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>OpenRpg.Editor.Desktop</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\OpenRpg.Editor.Web\OpenRpg.Editor.Web.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="wwwroot\**\**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Content\**\**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Photino.Blazor" Version="1.1.1" />
+    </ItemGroup>
+
+</Project>
