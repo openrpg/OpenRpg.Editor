@@ -8,7 +8,7 @@ namespace OpenRpg.Editor.Desktop
         [STAThread]
         static void Main(string[] args)
         {
-            ComponentsDesktop.Run<Startup>("OpenRpg - Data Editor", "./wwwroot/index.html");
+            ComponentsDesktop.Run<Startup>("OpenRpg - Data Editor", "./wwwroot/index.html", false, 0, 0, 1920, 1080);
         }
     }
 }

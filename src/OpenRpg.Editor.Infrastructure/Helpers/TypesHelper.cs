@@ -22,12 +22,12 @@ namespace OpenRpg.Editor.Infrastructure.Helpers
             return optionData.OrderBy(x => x.Name).ToArray();
         }
         
-        public static readonly OptionData[] GetItemTypes = GetTypesFor(typeof(ItemTypes));
-        public static readonly OptionData[] GetItemQualityTypes = GetTypesFor(typeof(ItemQualityTypes));
-        public static readonly OptionData[] GetRequirementTypes = GetTypesFor(typeof(RequirementTypes));
-        public static readonly OptionData[] GetModificationTypes = GetTypesFor(typeof(ModificationTypes));
-        public static readonly OptionData[] GetEffectTypes = GetTypesFor(typeof(EffectTypes));
-        public static readonly OptionData[] GetRewardTypes = GetTypesFor(typeof(RewardTypes));
-        public static readonly OptionData[] GetObjectiveTypes = GetTypesFor(typeof(ObjectiveTypes));
+        public static readonly OptionData[] GetItemTypes = GetTypesFor(typeof(ItemTypes)).OrderBy(x => x.Id).ToArray();
+        public static readonly OptionData[] GetItemQualityTypes = GetTypesFor(typeof(ItemQualityTypes)).OrderBy(x => x.Id).ToArray();
+        public static readonly OptionData[] GetRequirementTypes = GetTypesFor(typeof(RequirementTypes)).OrderBy(x => x.Id).ToArray();
+        public static readonly OptionData[] GetModificationTypes = GetTypesFor(typeof(ModificationTypes)).OrderBy(x => x.Id).ToArray();
+        public static readonly OptionData[] GetEffectTypes = GetTypesFor(typeof(EffectTypes)).OrderBy(x => x.Id).ToArray();
+        public static readonly OptionData[] GetRewardTypes = GetTypesFor(typeof(RewardTypes)).OrderBy(x => x.Id).ToArray();
+        public static readonly OptionData[] GetObjectiveTypes = GetTypesFor(typeof(ObjectiveTypes)).OrderBy(x => x.Id).ToArray();
     }
 }

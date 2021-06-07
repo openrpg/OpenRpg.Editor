@@ -6,9 +6,9 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-      <PackageReference Include="OpenRpg.Data" Version="0.17.107" />
-      <PackageReference Include="OpenRpg.Genres.Fantasy" Version="0.17.75" />
-      <PackageReference Include="OpenRpg.Localization" Version="0.17.107" />
+      <PackageReference Include="OpenRpg.Data" Version="0.17.111" />
+      <PackageReference Include="OpenRpg.Genres.Fantasy" Version="0.17.77" />
+      <PackageReference Include="OpenRpg.Localization" Version="0.17.111" />
       <PackageReference Include="Persistity" Version="2.0.41" />
       <PackageReference Include="Persistity.Core" Version="2.0.41" />
       <PackageReference Include="Persistity.Flow" Version="2.0.41" />

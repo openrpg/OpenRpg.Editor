@@ -1,8 +1,8 @@
 [
   {
     "Id": 1,
-    "NameLocaleId": "basic-bandits-name",
-    "DescriptionLocaleId": "basic-bandits-description",
+    "NameLocaleId": "quest-basic-bandits-name",
+    "DescriptionLocaleId": "quest-basic-bandits-description",
     "Requirements": [],
     "IsRepeatable": false,
     "Objectives": [
@@ -29,13 +29,13 @@
     "Gifts": [],
     "Variables":
       {
-        "500": "basic-bandits"
+        "500": "quest-basic-bandits"
       }
   },
   {
     "Id": 2,
-    "NameLocaleId": "basic-slimes-name",
-    "DescriptionLocaleId": "basic-slimes-description",
+    "NameLocaleId": "quest-basic-slimes-name",
+    "DescriptionLocaleId": "quest-basic-slimes-description",
     "Requirements": [],
     "IsRepeatable": false,
     "Objectives": [
@@ -62,13 +62,13 @@
     "Gifts": [],
     "Variables":
     {
-      "500": "basic-slimes"
+      "500": "quest-basic-slimes"
     }
   },
   {
     "Id": 3,
-    "NameLocaleId": "first-boss-name",
-    "DescriptionLocaleId": "first-boss-description",
+    "NameLocaleId": "quest-first-boss-name",
+    "DescriptionLocaleId": "quest-first-boss-description",
     "Requirements": [
       {
         "RequirementType": 3,
@@ -101,7 +101,7 @@
     "Gifts": [],
     "Variables":
     {
-      "500": "first-boss"
+      "500": "quest-first-boss"
     }
   }
 ]

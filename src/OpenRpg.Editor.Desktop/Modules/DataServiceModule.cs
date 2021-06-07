@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using OpenRpg.Core.Classes;
 using OpenRpg.Core.Common;
 using OpenRpg.Core.Races;
+using OpenRpg.Core.Variables;
 using OpenRpg.Data.Defaults;
 using OpenRpg.Editor.Infrastructure.Pipelines;
 using OpenRpg.Editor.Infrastructure.Pipelines.Typed;
 using OpenRpg.Editor.Infrastructure.Services;
 using OpenRpg.Items.Templates;
+using OpenRpg.Items.Types;
 using OpenRpg.Localization;
 using OpenRpg.Localization.Repositories;
 using OpenRpg.Quests;
@@ -19,12 +19,20 @@ using Persistity.Core.Serialization;
 using Persistity.Endpoints.Files;
 using Persistity.Flow.Builders;
 using Persistity.Serializers.Json;
-using JsonSerializer = Persistity.Serializers.Json.JsonSerializer;
 
 namespace OpenRpg.Editor.Desktop.Modules
 {
     public class DataServiceModule
     {
+        public static string GetContentDirectory()
+        {
+#if DEBUG
+            return "../../../Content";
+#else
+            return"./Content";
+#endif
+        }
+        
         public static void Setup(IServiceCollection services)
         {
             services.AddSingleton<ISerializer, JsonSerializer>();
@@ -32,14 +40,12 @@ namespace OpenRpg.Editor.Desktop.Modules
             services.AddSingleton<ICloner, Cloner>();
             services.AddSingleton<PipelineBuilder>();
 
-            var content = File.ReadAllText("Content/Data/item-templates.json");
-            var races = JsonConvert.DeserializeObject<List<DefaultRaceTemplate>>(content);
-            
-            RegisterCollectionDataPipeline<DefaultItemTemplate>(services, "Content/Data/item-templates.json");
-            RegisterCollectionDataPipeline<DefaultRaceTemplate>(services, "Content/Data/race-templates.json");
-            RegisterCollectionDataPipeline<DefaultClassTemplate>(services, "Content/Data/class-templates.json");
-            RegisterCollectionDataPipeline<DefaultQuest>(services, "Content/Data/quest-templates.json");
-            RegisterDataPipeline<LocaleDataset>(services, "Content/Locales/en-gb.lang.json");
+            var contentDir = GetContentDirectory();
+            RegisterCollectionDataPipeline<DefaultItemTemplate>(services, $"{contentDir}/Data/item-templates.json");
+            RegisterCollectionDataPipeline<DefaultRaceTemplate>(services, $"{contentDir}/Data/race-templates.json");
+            RegisterCollectionDataPipeline<DefaultClassTemplate>(services, $"{contentDir}/Data/class-templates.json");
+            RegisterCollectionDataPipeline<DefaultQuest>(services, $"{contentDir}/Data/quest-templates.json");
+            RegisterDataPipeline<LocaleDataset>(services, $"{contentDir}/Locales/en-gb.lang.json");
 
             RegisterRepository<DefaultItemTemplate>(services);
             RegisterRepository<DefaultRaceTemplate>(services);

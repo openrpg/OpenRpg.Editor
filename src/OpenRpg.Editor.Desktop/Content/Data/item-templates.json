@@ -1,6 +1,7 @@
 [
   {
     "Id": 1,
+    "ItemType": 11,
     "NameLocaleId": "item-long-sword-name",
     "DescriptionLocaleId": "item-long-sword-description",
     "Requirements": [],
@@ -17,14 +18,16 @@
       }
     ],
     "ModificationAllowances": [],
-    "ItemType": 11,
-    "Variables":
-    {
+    "Variables": {
+      "1": 2,
+      "2": 100,
+      "3": 0,
       "500": "item-long-sword"
     }
   },
   {
     "Id": 2,
+    "ItemType": 11,
     "NameLocaleId": "item-short-sword-name",
     "DescriptionLocaleId": "item-short-sword-description",
     "Requirements": [],
@@ -41,14 +44,16 @@
       }
     ],
     "ModificationAllowances": [],
-    "ItemType": 11,
-    "Variables":
-    {
+    "Variables": {
+      "1": 2,
+      "2": 80,
+      "3": 0,
       "500": "item-short-sword"
     }
   },
   {
-    "Id": 4,
+    "Id": 3,
+    "ItemType": 3,
     "NameLocaleId": "item-leather-chest-name",
     "DescriptionLocaleId": "item-leather-chest-description",
     "Requirements": [],
@@ -70,14 +75,16 @@
       }
     ],
     "ModificationAllowances": [],
-    "ItemType": 3,
-    "Variables":
-    {
+    "Variables": {
+      "1": 2,
+      "2": 100,
+      "3": 0,
       "500": "item-leather-chest"
     }
   },
   {
     "Id": 4,
+    "ItemType": 4,
     "NameLocaleId": "item-leather-pants-name",
     "DescriptionLocaleId": "item-leather-pants-description",
     "Requirements": [],
@@ -99,9 +106,10 @@
       }
     ],
     "ModificationAllowances": [],
-    "ItemType": 4,
-    "Variables":
-    {
+    "Variables": {
+      "1": 2,
+      "2": 100,
+      "3": 0,
       "500": "item-leather-pants"
     }
   }

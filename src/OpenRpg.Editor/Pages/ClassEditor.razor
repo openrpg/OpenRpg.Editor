@@ -6,10 +6,12 @@
 @using OpenRpg.Data.Defaults
 @using OpenRpg.Editor.Infrastructure.Extensions
 @using OpenRpg.Editor.Infrastructure.Pipelines.Typed
+@using OpenRpg.Localization.Repositories
 
 @inject IJSRuntime JS
 @inject InMemoryDataRepository<DefaultClassTemplate> Repository
 @inject ISaveDataPipeline<List<DefaultClassTemplate>> SavePipeline
+@inject LocaleRepository LocaleRepository;
 
 <div class="columns">
     <div class="column is-one-fifth">
@@ -21,7 +23,12 @@
     <div class="column">
         
         <div class="is-rounded has-background-dark p-lg m-md">
-            <BasicDetailsEditor Data="CurrentClassTemplate"></BasicDetailsEditor>
+            <BasicDetailsEditor Data="CurrentClassTemplate">
+                <AdditionalContent>
+                    <AssetCodeEditor Variables="CurrentClassTemplate.Variables" DefaultAssetCode="@($"class-{CurrentClassTemplate.Id}")" 
+                                     OnAssetCodeChanged="OnAssetCodeChanged"/>
+                </AdditionalContent>
+            </BasicDetailsEditor>
         </div>
 
         <div class="is-rounded has-background-dark p-lg m-md">
@@ -64,7 +71,7 @@
     {
         CurrentClassTemplate = new DefaultClassTemplate();
         CurrentClassTemplate.Id = Repository.Data.Count + 1;
-        CurrentClassTemplate.Variables.AssetCode($"class-new-{CurrentClassTemplate.Id}");
+        CurrentClassTemplate.Variables.AssetCode($"class-{CurrentClassTemplate.Id}");
         Repository.Create(CurrentClassTemplate);
         StateHasChanged();
     }
@@ -102,4 +109,7 @@
         CurrentClassTemplate.Requirements = updatedRequirements;
         StateHasChanged();
     }
+    
+    public void OnAssetCodeChanged(string newAssetCode)
+    { CurrentClassTemplate.UpdateLocale(newAssetCode, LocaleRepository); }
 }

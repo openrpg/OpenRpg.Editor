@@ -4,11 +4,13 @@
 @using OpenRpg.Data.Defaults
 @using OpenRpg.Editor.Infrastructure.Extensions
 @using OpenRpg.Editor.Infrastructure.Pipelines.Typed
+@using OpenRpg.Localization.Repositories
 @using OpenRpg.Quests
 
 @inject IJSRuntime JS
 @inject InMemoryDataRepository<DefaultQuest> Repository
 @inject ISaveDataPipeline<List<DefaultQuest>> SavePipeline;
+@inject LocaleRepository LocaleRepository;
 
 <div class="columns">
     <div class="column is-one-fifth">
@@ -19,7 +21,12 @@
     <div class="column">
         
         <div class="is-rounded has-background-dark p-lg m-md">
-            <BasicDetailsEditor Data="CurrentQuest"></BasicDetailsEditor>
+            <BasicDetailsEditor Data="CurrentQuest">
+                <AdditionalContent>
+                    <AssetCodeEditor Variables="CurrentQuest.Variables" DefaultAssetCode="@($"item-{CurrentQuest.Id}")" 
+                                     OnAssetCodeChanged="OnAssetCodeChanged"/>
+                </AdditionalContent>
+            </BasicDetailsEditor>
         </div>
 
         <div class="is-rounded has-background-dark p-lg m-md">
@@ -72,7 +79,7 @@
     {
         CurrentQuest = new DefaultQuest();
         CurrentQuest.Id = Repository.Data.Count + 1;
-        CurrentQuest.Variables.AssetCode($"class-new-{CurrentQuest.Id}");
+        CurrentQuest.Variables.AssetCode($"quest-{CurrentQuest.Id}");
         Repository.Create(CurrentQuest);
         StateHasChanged();
     }
@@ -122,4 +129,7 @@
         CurrentQuest.Requirements = updatedRequirements;
         StateHasChanged();
     }
+    
+    public void OnAssetCodeChanged(string newAssetCode)
+    { CurrentQuest.UpdateLocale(newAssetCode, LocaleRepository); }
 }

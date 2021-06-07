@@ -6,10 +6,12 @@
 @using OpenRpg.Data.Defaults
 @using OpenRpg.Editor.Infrastructure.Extensions
 @using OpenRpg.Editor.Infrastructure.Pipelines.Typed
+@using OpenRpg.Localization.Repositories
 
 @inject IJSRuntime JS
 @inject InMemoryDataRepository<DefaultRaceTemplate> Repository
 @inject ISaveDataPipeline<List<DefaultRaceTemplate>> SavePipeline;
+@inject LocaleRepository LocaleRepository;
 
 <div class="columns">
     <div class="column is-one-fifth">
@@ -22,7 +24,8 @@
             <div class="is-rounded has-background-dark p-lg m-md">
                 <BasicDetailsEditor Data="CurrentRaceTemplate">
                     <AdditionalContent>
-                        <AssetCodeEditor Variables="CurrentRaceTemplate.Variables" DefaultAssetCode="@($"race-{CurrentRaceTemplate.Id}")"></AssetCodeEditor>
+                        <AssetCodeEditor Variables="CurrentRaceTemplate.Variables" DefaultAssetCode="@($"race-{CurrentRaceTemplate.Id}")"
+                                         OnAssetCodeChanged="OnAssetCodeChanged"/>
                     </AdditionalContent>
                 </BasicDetailsEditor>
             </div>
@@ -107,4 +110,7 @@
         CurrentRaceTemplate.Requirements = updatedRequirements;
         StateHasChanged();
     }
+    
+    public void OnAssetCodeChanged(string newAssetCode)
+    { CurrentRaceTemplate.UpdateLocale(newAssetCode, LocaleRepository); }
 }

@@ -10,10 +10,12 @@
 @using OpenRpg.Editor.Infrastructure.Services
 @using OpenRpg.Items.Extensions
 @using OpenRpg.Items.Templates
+@using OpenRpg.Localization.Repositories
 
 @inject IJSRuntime JS
 @inject InMemoryDataRepository<DefaultItemTemplate> Repository
 @inject ISaveDataPipeline<List<DefaultItemTemplate>> SavePipeline;
+@inject LocaleRepository LocaleRepository;
 @inject ICloner Cloner;
 
 <div class="columns">
@@ -32,6 +34,10 @@
                         <img src="@($"Assets/{CurrentItemTemplate.Variables.AssetCode()}.png")">
                     </figure>
                 </AvatarContent>
+                <AdditionalContent>
+                    <AssetCodeEditor Variables="CurrentItemTemplate.Variables" DefaultAssetCode="@($"item-{CurrentItemTemplate.Id}")" 
+                                     OnAssetCodeChanged="OnAssetCodeChanged"/>
+                </AdditionalContent>
             </BasicDetailsEditor>
         </div>
         
@@ -46,7 +52,7 @@
                         <div class="control">
                             <input class="input" type="text" placeholder="i.e 25" 
                                    value="@CurrentItemTemplate.Variables.MaxStacks()" 
-                                   @onchange="e =>CurrentItemTemplate.Variables.MaxStacks(int.Parse(e.Value?.ToString()))"/>
+                                   @onchange="e => CurrentItemTemplate.Variables.MaxStacks(int.Parse(e.Value?.ToString()))"/>
                         </div>
                     </div>
                 </div>
@@ -60,7 +66,7 @@
                         <div class="control">
                             <input class="input" type="text" placeholder="i.e 100" 
                                    value="@CurrentItemTemplate.Variables.Value()"
-                                   @onchange="e =>CurrentItemTemplate.Variables.Value(int.Parse(e.Value?.ToString()))"/>
+                                   @onchange="e => CurrentItemTemplate.Variables.Value(int.Parse(e.Value?.ToString()))"/>
                         </div>
                     </div>
                 </div>
@@ -73,7 +79,7 @@
                     <div class="field">
                         <div class="control">
                             <div class="select">
-                                <select bind="@CurrentItemTemplate.ItemType">
+                                <select @bind="CurrentItemTemplate.ItemType">
                                     @foreach (var itemType in TypesHelper.GetItemTypes)
                                     {
                                         <option value=@itemType.Id>@itemType.Name</option>
@@ -143,13 +149,14 @@
 </div>
 
 @functions {
+    
     public DefaultItemTemplate CurrentItemTemplate;
 
     protected override void OnInitialized()
     {
         SelectDefault();
     }
-
+    
     public void SelectDefault()
     {
         if (Repository.Data.Any())
@@ -166,7 +173,8 @@
     {
         CurrentItemTemplate = new DefaultItemTemplate();
         CurrentItemTemplate.Id = Repository.Data.Count + 1;
-        CurrentItemTemplate.Variables.AssetCode($"item-new-{CurrentItemTemplate.Id}");
+        CurrentItemTemplate.Variables.AssetCode($"item-{CurrentItemTemplate.Id}");
+        CurrentItemTemplate.GenerateLocaleCodes(CurrentItemTemplate.Variables.AssetCode());
         Repository.Create(CurrentItemTemplate);
         StateHasChanged();
     }
@@ -180,6 +188,8 @@
     public void DeleteItem()
     {
         Repository.Delete(CurrentItemTemplate);
+        var options = new {message = $"Deleted Item {CurrentItemTemplate.Variables.AssetCode()}", type = "is-success", position = "bottom-center"};
+        JS.InvokeAsync<object>("bulmaToast.toast", options);   
         SelectDefault();
     }
 
@@ -187,9 +197,13 @@
     {
         var clone = Cloner.Clone(CurrentItemTemplate);
         clone.Id = CurrentItemTemplate.Id = Repository.Data.Count + 1;
-        //clone.AssetCode = $"{CurrentItemTemplate.AssetCode}-clone";
-        
+        clone.Variables.AssetCode($"{CurrentItemTemplate.Variables.AssetCode()}-clone");
+        CurrentItemTemplate.GenerateLocaleCodes(CurrentItemTemplate.Variables.AssetCode());
         Repository.Create(clone);
+        
+        var options = new {message = $"Cloned Item {CurrentItemTemplate.Variables.AssetCode()}", type = "is-success", position = "bottom-center"};
+        JS.InvokeAsync<object>("bulmaToast.toast", options);
+        
         CurrentItemTemplate = clone;
         StateHasChanged();
     }
@@ -227,4 +241,7 @@
         CurrentItemTemplate.ModificationAllowances = updatedModificationAllowances;
         StateHasChanged();
     }
+
+    public void OnAssetCodeChanged(string newAssetCode)
+    { CurrentItemTemplate.UpdateLocale(newAssetCode, LocaleRepository); }
 }
