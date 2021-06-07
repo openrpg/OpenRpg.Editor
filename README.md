@@ -23,7 +23,7 @@ This contains the core logic and *infrastructure* classes for the editor to use,
 
 On top of that we have the core *Editor* library which is basically a suite of reusable components with some default pages that you can consume in your own blazor applications.
 
-#### `OpenRpg.Editor.App` *(Recommended Startup App)*
+#### `OpenRpg.Editor.Desktop` *(Recommended Startup App)*
 
 This is an application version of the editor which is run within a .net web view, so it can access local file systems and other things the browser cant.
 
