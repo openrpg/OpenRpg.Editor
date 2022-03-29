@@ -9,7 +9,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.6" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.3" />
       <PackageReference Include="OpenRpg.Core" Version="0.19.156" />
       <PackageReference Include="OpenRpg.Items" Version="0.19.156" />
       <PackageReference Include="OpenRpg.Quests" Version="0.19.156" />
