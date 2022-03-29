@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -38,6 +38,14 @@
       <_ContentIncludedByDefault Remove="Pages\ItemEditor.razor" />
       <_ContentIncludedByDefault Remove="Pages\QuestEditor.razor" />
       <_ContentIncludedByDefault Remove="Pages\RaceEditor.razor" />
+      <_ContentIncludedByDefault Remove="wwwroot\Assets\item-long-sword.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\Assets\item-short-sword.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\bulma\bulma.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\site.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\favicon.ico" />
+      <_ContentIncludedByDefault Remove="wwwroot\index.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\libs\bulma.toast.js" />
+      <_ContentIncludedByDefault Remove="Properties\launchSettings.json" />
     </ItemGroup>
 
 </Project>
