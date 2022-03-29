@@ -7,9 +7,10 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.6" PrivateAssets="all" />
-        <PackageReference Include="OpenRpg.Data" Version="0.17.111" />
-        <PackageReference Include="OpenRpg.Genres.Fantasy" Version="0.17.77" />
-        <PackageReference Include="OpenRpg.Localization" Version="0.17.111" />
+        <PackageReference Include="OpenRpg.Data" Version="0.19.156" />
+        <PackageReference Include="OpenRpg.Data.InMemory" Version="0.19.156" />
+        <PackageReference Include="OpenRpg.Genres.Fantasy" Version="0.21.16" />
+        <PackageReference Include="OpenRpg.Localization" Version="0.19.156" />
         <PackageReference Include="Persistity" Version="2.0.41" />
         <PackageReference Include="Persistity.Serializers.Json" Version="2.0.41" />
         <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />

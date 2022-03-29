@@ -1,19 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using OpenRpg.Core.Classes;
 using OpenRpg.Core.Common;
 using OpenRpg.Core.Races;
-using OpenRpg.Core.Variables;
-using OpenRpg.Data.Defaults;
+using OpenRpg.Data;
+using OpenRpg.Data.InMemory;
 using OpenRpg.Editor.Infrastructure.Pipelines;
 using OpenRpg.Editor.Infrastructure.Pipelines.Typed;
 using OpenRpg.Editor.Infrastructure.Services;
 using OpenRpg.Items.Templates;
-using OpenRpg.Items.Types;
 using OpenRpg.Localization;
-using OpenRpg.Localization.Repositories;
+using OpenRpg.Localization.Data.DataSources;
+using OpenRpg.Localization.Data.Repositories;
 using OpenRpg.Quests;
 using Persistity.Core.Serialization;
 using Persistity.Endpoints.Files;
@@ -47,11 +48,7 @@ namespace OpenRpg.Editor.Desktop.Modules
             RegisterCollectionDataPipeline<DefaultQuest>(services, $"{contentDir}/Data/quest-templates.json");
             RegisterDataPipeline<LocaleDataset>(services, $"{contentDir}/Locales/en-gb.lang.json");
 
-            RegisterRepository<DefaultItemTemplate>(services);
-            RegisterRepository<DefaultRaceTemplate>(services);
-            RegisterRepository<DefaultClassTemplate>(services);
-            RegisterRepository<DefaultQuest>(services);
-
+            RegisterRepository(services);
             RegisterLocaleRespository(services);
         }
 
@@ -68,22 +65,38 @@ namespace OpenRpg.Editor.Desktop.Modules
                 new SaveDataPipeline<T>(x.GetService<PipelineBuilder>(), x.GetService<ISerializer>(), fileEndpoint));
         }
         
-        public static void RegisterRepository<T>(IServiceCollection services)
-            where T : IHasDataId
+        public static void RegisterRepository(IServiceCollection services)
         {
-            services.AddSingleton<InMemoryDataRepository<T>>(x =>
+            services.AddSingleton<IDataSource>(x =>
             {
-                var data = LoadPipelineData<List<T>>(x);
-                return new InMemoryDataRepository<T>(data);
+                var itemTemplateData = LoadPipelineData<List<DefaultItemTemplate>>(x);
+                var raceTemplateData = LoadPipelineData<List<DefaultRaceTemplate>>(x);
+                var classTemplateData = LoadPipelineData<List<DefaultClassTemplate>>(x);
+                var questTemplateData = LoadPipelineData<List<DefaultQuest>>(x);
+                var inMemoryDatabase = new Dictionary<Type, Dictionary<object, object>>();
+                inMemoryDatabase.Add(typeof(IItemTemplate), itemTemplateData.ToDictionary(x => (object)x.Id, x => (object)x));
+                inMemoryDatabase.Add(typeof(IRaceTemplate), raceTemplateData.ToDictionary(x => (object)x.Id, x => (object)x));
+                inMemoryDatabase.Add(typeof(IClassTemplate), classTemplateData.ToDictionary(x => (object)x.Id, x => (object)x));
+                inMemoryDatabase.Add(typeof(IQuest), questTemplateData.ToDictionary(x => (object)x.Id, x => (object)x));
+                return new InMemoryDataSource(inMemoryDatabase);
             });
+
+            services.AddSingleton<IRepository, DefaultRepository>();
         }
 
         public static void RegisterLocaleRespository(IServiceCollection services)
         {
-            services.AddSingleton<LocaleRepository>(x =>
+            services.AddSingleton<ILocaleDataSource>(x =>
             {
                 var data = LoadPipelineData<LocaleDataset>(x);
-                return new LocaleRepository(data);
+                return new InMemoryLocaleDataSource(new [] { data });
+            });
+
+            services.AddSingleton<ILocaleRepository>(x =>
+            {
+                var datasource = x.GetService<ILocaleDataSource>();
+                var defaultLocale = (datasource as InMemoryLocaleDataSource).LocaleDatasets.First().Key;
+                return new LocaleRepository(datasource, defaultLocale);
             });
         }
         

@@ -3,24 +3,25 @@
 @using OpenRpg.Core.Effects
 @using OpenRpg.Core.Modifications
 @using OpenRpg.Core.Requirements
-@using OpenRpg.Data.Defaults
+@using OpenRpg.Data
+@using OpenRpg.Data.Conventions.Extensions
 @using OpenRpg.Editor.Infrastructure.Extensions
 @using OpenRpg.Editor.Infrastructure.Helpers
 @using OpenRpg.Editor.Infrastructure.Pipelines.Typed
 @using OpenRpg.Editor.Infrastructure.Services
 @using OpenRpg.Items.Extensions
 @using OpenRpg.Items.Templates
-@using OpenRpg.Localization.Repositories
+@using OpenRpg.Localization.Data.Repositories
 
 @inject IJSRuntime JS
-@inject InMemoryDataRepository<DefaultItemTemplate> Repository
+@inject IRepository Repository
 @inject ISaveDataPipeline<List<DefaultItemTemplate>> SavePipeline;
-@inject LocaleRepository LocaleRepository;
+@inject ILocaleRepository LocaleRepository;
 @inject ICloner Cloner;
 
 <div class="columns">
     <div class="column is-one-fifth">
-        <ContentSidebar Title="Item Templates" Data="Repository.Data" SelectedItem="CurrentItemTemplate"
+        <ContentSidebar Title="Item Templates" Data="Repository.GetAll<IItemTemplate>()" SelectedItem="CurrentItemTemplate"
                     OnAdd="@AddItem" OnSelected="@((selected) => SelectItem(selected as DefaultItemTemplate))">
         </ContentSidebar>
     </div>
@@ -159,8 +160,9 @@
     
     public void SelectDefault()
     {
-        if (Repository.Data.Any())
-        { CurrentItemTemplate = Repository.Data.First(); }
+        var firstItemTemplate = Repository.GetAll<IItemTemplate>().FirstOrDefault();
+        if (firstItemTemplate != null)
+        { CurrentItemTemplate = firstItemTemplate as DefaultItemTemplate; }
         else
         {
             CurrentItemTemplate = new DefaultItemTemplate();
@@ -172,7 +174,7 @@
     public void AddItem()
     {
         CurrentItemTemplate = new DefaultItemTemplate();
-        CurrentItemTemplate.Id = Repository.Data.Count + 1;
+        CurrentItemTemplate.Id = Repository.GetAll<IItemTemplate>().Count() + 1;
         CurrentItemTemplate.Variables.AssetCode($"item-{CurrentItemTemplate.Id}");
         CurrentItemTemplate.GenerateLocaleCodes(CurrentItemTemplate.Variables.AssetCode());
         Repository.Create(CurrentItemTemplate);
@@ -196,7 +198,7 @@
     public void CloneItem()
     {
         var clone = Cloner.Clone(CurrentItemTemplate);
-        clone.Id = CurrentItemTemplate.Id = Repository.Data.Count + 1;
+        clone.Id = CurrentItemTemplate.Id = Repository.GetAll<IItemTemplate>().Count() + 1;
         clone.Variables.AssetCode($"{CurrentItemTemplate.Variables.AssetCode()}-clone");
         CurrentItemTemplate.GenerateLocaleCodes(CurrentItemTemplate.Variables.AssetCode());
         Repository.Create(clone);
@@ -212,7 +214,7 @@
     {
         try
         {
-            await SavePipeline.Execute(Repository.Data);
+            await SavePipeline.Execute(Repository.GetAll<IItemTemplate>());
             var options = new {message = "Items saved", type = "is-success", position = "bottom-center"};
             await JS.InvokeAsync<object>("bulmaToast.toast", options);
 

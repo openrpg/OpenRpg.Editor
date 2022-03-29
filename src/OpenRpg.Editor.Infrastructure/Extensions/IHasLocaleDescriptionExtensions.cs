@@ -2,7 +2,8 @@ using OpenRpg.Core.Classes;
 using OpenRpg.Core.Common;
 using OpenRpg.Core.Races;
 using OpenRpg.Items.Templates;
-using OpenRpg.Localization.Repositories;
+using OpenRpg.Localization.Data.Extensions;
+using OpenRpg.Localization.Data.Repositories;
 using OpenRpg.Quests;
 
 namespace OpenRpg.Editor.Infrastructure.Extensions
@@ -47,8 +48,8 @@ namespace OpenRpg.Editor.Infrastructure.Extensions
 
         public static void MoveLocaleInRepository(this ILocaleRepository repository, string oldLocaleKey, string newLocaleKey)
         {
-            if (!repository.Has(oldLocaleKey)) { return; }
-            var localeData = repository.Retrieve(oldLocaleKey);
+            if (!repository.Exists(oldLocaleKey)) { return; }
+            var localeData = repository.Get(oldLocaleKey);
             repository.Delete(oldLocaleKey);
             repository.Create(newLocaleKey, localeData);
         }

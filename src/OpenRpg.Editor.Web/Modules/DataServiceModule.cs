@@ -3,13 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 using OpenRpg.Core.Classes;
 using OpenRpg.Core.Common;
 using OpenRpg.Core.Races;
-using OpenRpg.Data.Defaults;
+using OpenRpg.Data;
+using OpenRpg.Data.InMemory;
 using OpenRpg.Editor.Infrastructure.Pipelines;
 using OpenRpg.Editor.Infrastructure.Pipelines.Typed;
 using OpenRpg.Editor.Infrastructure.Services;
 using OpenRpg.Items.Templates;
 using OpenRpg.Localization;
-using OpenRpg.Localization.Repositories;
+using OpenRpg.Localization.Data.DataSources;
+using OpenRpg.Localization.Data.Repositories;
 using OpenRpg.Quests;
 using Persistity.Core.Serialization;
 using Persistity.Endpoints.Files;
@@ -33,11 +35,7 @@ namespace OpenRpg.Editor.Web.Modules
             RegisterCollectionDataPipeline<DefaultQuest>(services, "Content/Data/quest-templates.json");
             RegisterDataPipeline<LocaleDataset>(services, "Content/Locales/en-gb.lang.json");
 
-            RegisterRepository<DefaultItemTemplate>(services);
-            RegisterRepository<DefaultRaceTemplate>(services);
-            RegisterRepository<DefaultClassTemplate>(services);
-            RegisterRepository<DefaultQuest>(services);
-
+            RegisterRepository(services);
             RegisterLocaleRespository(services);
         }
 
@@ -56,22 +54,19 @@ namespace OpenRpg.Editor.Web.Modules
                 new SaveDataPipeline<T>(x.GetService<PipelineBuilder>(), x.GetService<ISerializer>(), fileEndpoint));
         }
         
-        public static void RegisterRepository<T>(IServiceCollection services)
-            where T : IHasDataId
+        public static void RegisterRepository(IServiceCollection services)
         {
-            services.AddSingleton<InMemoryDataRepository<T>>(x =>
-            {
-                var data = new List<T>();
-                return new InMemoryDataRepository<T>(data);
-            });
+            services.AddSingleton<IDataSource>(x => new InMemoryDataSource());
+            services.AddSingleton<IRepository, DefaultRepository>();
         }
 
         public static void RegisterLocaleRespository(IServiceCollection services)
         {
-            services.AddSingleton<LocaleRepository>(x =>
+            services.AddSingleton<ILocaleRepository>(x =>
             {
                 var data = new LocaleDataset{LocaleCode = "en-gb", LocaleData = new Dictionary<string, string>()};
-                return new LocaleRepository(data);
+                var localeDataSource = new InMemoryLocaleDataSource(new [] { data });
+                return new LocaleRepository(localeDataSource, data.LocaleCode);
             });
         }
     }

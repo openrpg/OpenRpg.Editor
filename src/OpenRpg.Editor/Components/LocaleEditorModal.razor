@@ -1,9 +1,10 @@
 ﻿@using OpenRpg.Editor.Infrastructure.Models
 @using OpenRpg.Editor.Infrastructure.Pipelines.Typed
 @using OpenRpg.Localization
-@using OpenRpg.Localization.Repositories
+@using OpenRpg.Localization.Data.Extensions
+@using OpenRpg.Localization.Data.Repositories
 
-@inject LocaleRepository Repository;
+@inject ILocaleRepository Repository;
 @inject ISaveDataPipeline<LocaleDataset> SavePipeline;
 
 <div class="modal @(IsActive ? "is-active" : "")">
@@ -77,17 +78,17 @@
     {
         UpdateLocaleText(LocaleEntry);
 
-        SavePipeline.Execute(Repository.LocaleDataset);
+        SavePipeline.Execute(Repository.GetDataset());
         HideModal();
     }
 
     public LocaleEntry GetLocaleEntries()
     {
-        if (!Repository.Has(LocaleId))
-        { return new LocaleEntry{LocaleCode = Repository.LocaleCode, LocaleId = LocaleId, LocaleText = string.Empty, Exists = false}; }
+        if (!Repository.Exists(LocaleId))
+        { return new LocaleEntry{LocaleCode = Repository.CurrentLocaleCode, LocaleId = LocaleId, LocaleText = string.Empty, Exists = false}; }
         
-        var data = Repository.Retrieve(LocaleId);
-        return new LocaleEntry {LocaleCode = Repository.LocaleCode, LocaleId = LocaleId, LocaleText = data, Exists = true};
+        var data = Repository.Get(LocaleId);
+        return new LocaleEntry {LocaleCode = Repository.CurrentLocaleCode, LocaleId = LocaleId, LocaleText = data, Exists = true};
     }
 
     public void UpdateLocaleText(LocaleEntry localeEntry)

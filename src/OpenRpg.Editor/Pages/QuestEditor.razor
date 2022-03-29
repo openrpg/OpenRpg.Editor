@@ -1,20 +1,21 @@
 ﻿@page "/quests"
 
 @using OpenRpg.Core.Requirements
-@using OpenRpg.Data.Defaults
+@using OpenRpg.Data
+@using OpenRpg.Data.Conventions.Extensions
 @using OpenRpg.Editor.Infrastructure.Extensions
 @using OpenRpg.Editor.Infrastructure.Pipelines.Typed
-@using OpenRpg.Localization.Repositories
+@using OpenRpg.Localization.Data.Repositories
 @using OpenRpg.Quests
 
 @inject IJSRuntime JS
-@inject InMemoryDataRepository<DefaultQuest> Repository
+@inject IRepository Repository
 @inject ISaveDataPipeline<List<DefaultQuest>> SavePipeline;
-@inject LocaleRepository LocaleRepository;
+@inject ILocaleRepository LocaleRepository;
 
 <div class="columns">
     <div class="column is-one-fifth">
-        <ContentSidebar Title="Quests" Data="Repository.Data" SelectedItem="CurrentQuest"
+        <ContentSidebar Title="Quests" Data="Repository.GetAll<IQuest>()" SelectedItem="CurrentQuest"
                     OnAdd="AddQuest" OnSelected="selected => SelectQuest(selected as DefaultQuest)">
         </ContentSidebar>
     </div>
@@ -65,8 +66,9 @@
 
     protected override void OnInitialized()
     {
-        if (Repository.Data.Any())
-        { CurrentQuest = Repository.Data.First(); }
+        var firstQuest = Repository.GetAll<IQuest>().FirstOrDefault();
+        if (firstQuest != null)
+        { CurrentQuest = firstQuest as DefaultQuest; }
         else
         {
             CurrentQuest = new DefaultQuest();
@@ -78,7 +80,7 @@
     public void AddQuest()
     {
         CurrentQuest = new DefaultQuest();
-        CurrentQuest.Id = Repository.Data.Count + 1;
+        CurrentQuest.Id = Repository.GetAll<IQuest>().Count() + 1;
         CurrentQuest.Variables.AssetCode($"quest-{CurrentQuest.Id}");
         Repository.Create(CurrentQuest);
         StateHasChanged();
@@ -94,7 +96,7 @@
     {
         try
         {
-            await SavePipeline.Execute(Repository.Data);
+            await SavePipeline.Execute(Repository.GetAll<IQuest>());
             var options = new {message = "Quests saved", type = "is-success", position = "bottom-center"};
             await JS.InvokeAsync<object>("bulmaToast.toast", options);
 

@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRpg.Editor.Infrastructure.Extensions;
 using OpenRpg.Editor.Infrastructure.Models;
-using OpenRpg.Genres.Fantasy.Types;
+using OpenRpg.Genres.Types;
+using EffectTypes = OpenRpg.Genres.Fantasy.Types.EffectTypes;
+using ItemQualityTypes = OpenRpg.Genres.Fantasy.Types.ItemQualityTypes;
+using ItemTypes = OpenRpg.Genres.Fantasy.Types.ItemTypes;
+using ModificationTypes = OpenRpg.Genres.Fantasy.Types.ModificationTypes;
+using RequirementTypes = OpenRpg.Genres.Fantasy.Types.RequirementTypes;
+using RewardTypes = OpenRpg.Genres.Fantasy.Types.RewardTypes;
 
 namespace OpenRpg.Editor.Infrastructure.Helpers
 {
