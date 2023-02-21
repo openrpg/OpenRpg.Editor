@@ -66,7 +66,7 @@
         {
             CurrentClassTemplate = new DefaultClassTemplate();
             CurrentClassTemplate.Id = 1;
-            Repository.Create(CurrentClassTemplate);
+            Repository.Create<IClassTemplate>(CurrentClassTemplate);
         }
     }
 
@@ -75,7 +75,7 @@
         CurrentClassTemplate = new DefaultClassTemplate();
         CurrentClassTemplate.Id = Repository.GetAll<IClassTemplate>().Count() + 1;
         CurrentClassTemplate.Variables.AssetCode($"class-{CurrentClassTemplate.Id}");
-        Repository.Create(CurrentClassTemplate);
+        Repository.Create<IClassTemplate>(CurrentClassTemplate);
         StateHasChanged();
     }
 

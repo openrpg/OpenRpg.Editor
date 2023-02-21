@@ -167,7 +167,7 @@
         {
             CurrentItemTemplate = new DefaultItemTemplate();
             CurrentItemTemplate.Id = 1;
-            Repository.Create(CurrentItemTemplate);
+            Repository.Create<IItemTemplate>(CurrentItemTemplate);
         }
     }
 
@@ -177,7 +177,7 @@
         CurrentItemTemplate.Id = Repository.GetAll<IItemTemplate>().Count() + 1;
         CurrentItemTemplate.Variables.AssetCode($"item-{CurrentItemTemplate.Id}");
         CurrentItemTemplate.GenerateLocaleCodes(CurrentItemTemplate.Variables.AssetCode());
-        Repository.Create(CurrentItemTemplate);
+        Repository.Create<IItemTemplate>(CurrentItemTemplate);
         StateHasChanged();
     }
 
@@ -189,7 +189,7 @@
 
     public void DeleteItem()
     {
-        Repository.Delete(CurrentItemTemplate);
+        Repository.Delete<IItemTemplate>(CurrentItemTemplate.Id);
         var options = new {message = $"Deleted Item {CurrentItemTemplate.Variables.AssetCode()}", type = "is-success", position = "bottom-center"};
         JS.InvokeAsync<object>("bulmaToast.toast", options);   
         SelectDefault();
@@ -198,10 +198,10 @@
     public void CloneItem()
     {
         var clone = Cloner.Clone(CurrentItemTemplate);
-        clone.Id = CurrentItemTemplate.Id = Repository.GetAll<IItemTemplate>().Count() + 1;
+        clone.Id = Repository.GetAll<IItemTemplate>().Count() + 1;
         clone.Variables.AssetCode($"{CurrentItemTemplate.Variables.AssetCode()}-clone");
-        CurrentItemTemplate.GenerateLocaleCodes(CurrentItemTemplate.Variables.AssetCode());
-        Repository.Create(clone);
+        clone.GenerateLocaleCodes(clone.Variables.AssetCode());
+        Repository.Create<IItemTemplate>(clone);
         
         var options = new {message = $"Cloned Item {CurrentItemTemplate.Variables.AssetCode()}", type = "is-success", position = "bottom-center"};
         JS.InvokeAsync<object>("bulmaToast.toast", options);

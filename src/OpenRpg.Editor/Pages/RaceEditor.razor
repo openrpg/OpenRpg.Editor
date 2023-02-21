@@ -65,7 +65,7 @@
         {
             CurrentRaceTemplate = new DefaultRaceTemplate();
             CurrentRaceTemplate.Id = 1;
-            Repository.Create(CurrentRaceTemplate);
+            Repository.Create<IRaceTemplate>(CurrentRaceTemplate);
         }
     }
 
@@ -74,7 +74,7 @@
         CurrentRaceTemplate = new DefaultRaceTemplate();
         CurrentRaceTemplate.Id = Repository.GetAll<IRaceTemplate>().Count() + 1;
         CurrentRaceTemplate.Variables.AssetCode($"race-new-{CurrentRaceTemplate.Id}");
-        Repository.Create(CurrentRaceTemplate);
+        Repository.Create<IRaceTemplate>(CurrentRaceTemplate);
         StateHasChanged();
     }
 

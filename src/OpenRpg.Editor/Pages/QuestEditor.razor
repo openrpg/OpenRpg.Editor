@@ -73,7 +73,7 @@
         {
             CurrentQuest = new DefaultQuest();
             CurrentQuest.Id = 1;
-            Repository.Create(CurrentQuest);
+            Repository.Create<IQuest>(CurrentQuest);
         }
     }
 
@@ -82,7 +82,7 @@
         CurrentQuest = new DefaultQuest();
         CurrentQuest.Id = Repository.GetAll<IQuest>().Count() + 1;
         CurrentQuest.Variables.AssetCode($"quest-{CurrentQuest.Id}");
-        Repository.Create(CurrentQuest);
+        Repository.Create<IQuest>(CurrentQuest);
         StateHasChanged();
     }
 
