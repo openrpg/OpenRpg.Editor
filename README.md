@@ -1,3 +1,5 @@
+-- THIS REPO HAS BEEN MERGED INTO THE MAIN OPENRPG REPO, SO IS NO LONGER MAINTAINED HERE --
+
 # OpenRpg.Editor
 Hey! So the editor itself is a work in progress, but should work fine for basic item, class, race and maybe quest creation.
 
